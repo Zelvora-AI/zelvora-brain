@@ -1,0 +1,20 @@
+[
+  {
+    "id": "returns-policy",
+    "title": "Returns Policy",
+    "metadata": { "category": "support" },
+    "text": "# Returns\nCustomers may return unopened products within 30 days of delivery. A receipt or order number is required.\n\n# Refunds\nApproved refunds are sent to the original payment method."
+  },
+  {
+    "id": "shipping-guide",
+    "title": "Shipping Guide",
+    "metadata": { "category": "operations" },
+    "text": "# Delivery\nStandard delivery usually takes three to five business days. Express delivery is available in supported regions.\n\n# Tracking\nCustomers receive a tracking link after dispatch."
+  },
+  {
+    "id": "account-help",
+    "title": "Account Help",
+    "metadata": { "category": "support" },
+    "text": "# Passwords\nUse the password reset link on the sign-in page. Reset links expire after sixty minutes.\n\n# Contact\nContact support when the account email is no longer accessible."
+  }
+]

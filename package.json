@@ -1,0 +1,41 @@
+{
+  "name": "zelvora-brain-public",
+  "version": "0.1.0",
+  "description": "Independent local retrieval toolkit with chunking, BM25, vector search, hybrid fusion, citations, and evaluation.",
+  "type": "module",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    }
+  },
+  "files": [
+    "dist",
+    "README.md",
+    "LICENSE"
+  ],
+  "scripts": {
+    "clean": "node scripts/clean.mjs",
+    "build": "npm run clean && tsc -p tsconfig.json",
+    "check": "npm run build && node scripts/acceptance.mjs",
+    "example": "npm run build && node examples/basic-retrieval.mjs",
+    "prepublishOnly": "npm run check"
+  },
+  "keywords": [
+    "retrieval",
+    "bm25",
+    "vector-search",
+    "hybrid-search",
+    "rrf",
+    "rag"
+  ],
+  "license": "MIT",
+  "engines": {
+    "node": ">=22"
+  },
+  "devDependencies": {
+    "typescript": "^5.7.3"
+  }
+}

@@ -1,5 +1,4 @@
-export type MetadataValue = string | number | boolean | null;
-export type Metadata = Record<string, MetadataValue>;
+export type Metadata = Record<string, unknown>;
 
 export type SourceDocument = {
   id: string;

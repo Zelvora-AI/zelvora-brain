@@ -6,9 +6,7 @@ export type ServerConfig = {
   mongodbDatabase: string;
   apiKey?: string;
   jsonBodyLimit: string;
-  chunkSize: number;
-  chunkOverlap: number;
-  embeddingDimensions: number;
+  maxCandidateChunks: number;
 };
 
 export function loadConfig(): ServerConfig {
@@ -16,21 +14,6 @@ export function loadConfig(): ServerConfig {
   const port = integerValue(process.env.PORT, 3_030, "PORT", 1, 65_535);
   const mongodbDatabase = process.env.MONGODB_DATABASE?.trim() || "zelvora_brain_public";
   const apiKey = process.env.PUBLIC_BRAIN_API_KEY?.trim() || undefined;
-  const chunkSize = integerValue(
-    process.env.PUBLIC_BRAIN_CHUNK_SIZE,
-    1_200,
-    "PUBLIC_BRAIN_CHUNK_SIZE",
-    100,
-    100_000,
-  );
-  const chunkOverlap = integerValue(
-    process.env.PUBLIC_BRAIN_CHUNK_OVERLAP,
-    150,
-    "PUBLIC_BRAIN_CHUNK_OVERLAP",
-    0,
-    chunkSize - 1,
-  );
-
   if (!/^[A-Za-z0-9_-]+$/.test(mongodbDatabase)) {
     throw new Error("MONGODB_DATABASE may contain only letters, numbers, underscores, and hyphens");
   }
@@ -46,14 +29,12 @@ export function loadConfig(): ServerConfig {
     mongodbDatabase,
     ...(apiKey ? { apiKey } : {}),
     jsonBodyLimit: "1mb",
-    chunkSize,
-    chunkOverlap,
-    embeddingDimensions: integerValue(
-      process.env.PUBLIC_BRAIN_HASH_EMBEDDING_DIMENSIONS,
-      128,
-      "PUBLIC_BRAIN_HASH_EMBEDDING_DIMENSIONS",
-      8,
-      4_096,
+    maxCandidateChunks: integerValue(
+      process.env.PUBLIC_BRAIN_MAX_CANDIDATE_CHUNKS,
+      5_000,
+      "PUBLIC_BRAIN_MAX_CANDIDATE_CHUNKS",
+      100,
+      100_000,
     ),
   };
 }

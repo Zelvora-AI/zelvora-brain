@@ -9,3 +9,6 @@ export * from "./hybrid/reciprocal-rank-fusion.js";
 export * from "./hybrid/hybrid-retriever.js";
 export * from "./citations/citations.js";
 export * from "./evaluation/metrics.js";
+export * from "./domain/brain-chunk.js";
+export * from "./domain/scope.js";
+export * from "./retrieval/contracts.js";

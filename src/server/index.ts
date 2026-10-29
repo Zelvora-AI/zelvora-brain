@@ -1,8 +1,8 @@
 import { createApp } from "./app.js";
 import { loadConfig } from "./config.js";
-import { connectDatabase } from "./database.js";
-import { MongoDocumentRepository } from "./document.repository.js";
-import { RetrievalService } from "./retrieval.service.js";
+import { connectDatabase, disconnectDatabase } from "./database.js";
+import { ChunkRetrievalService } from "../retrieval/chunk-retrieval.service.js";
+import { BrainChunkRepository } from "../storage/brain-chunk.repository.js";
 
 async function start(): Promise<void> {
   try {
@@ -12,12 +12,11 @@ async function start(): Promise<void> {
   }
 
   const config = loadConfig();
-  const connection = await connectDatabase(config.mongodbUri, config.mongodbDatabase);
-  const documents = new MongoDocumentRepository(connection.database);
-  await documents.ensureIndexes();
-  const retrieval = new RetrievalService(documents, config);
-  await retrieval.refresh();
-  const app = createApp(config, { documents, retrieval });
+  await connectDatabase(config.mongodbUri, config.mongodbDatabase);
+  const chunks = new BrainChunkRepository();
+  await chunks.ensureIndexes();
+  const retrieval = new ChunkRetrievalService(chunks, config.maxCandidateChunks);
+  const app = createApp(config, { chunks, retrieval });
   const server = app.listen(config.port, config.host, () => {
     console.log(`Zelvora Brain Public listening on http://${config.host}:${config.port}`);
   });
@@ -30,7 +29,7 @@ async function start(): Promise<void> {
     await new Promise<void>((resolve, reject) => {
       server.close((error) => error ? reject(error) : resolve());
     });
-    await connection.client.close();
+    await disconnectDatabase();
   };
   process.once("SIGINT", () => void stop("SIGINT"));
   process.once("SIGTERM", () => void stop("SIGTERM"));

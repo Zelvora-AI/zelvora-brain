@@ -4,6 +4,7 @@ export type Metadata = Record<string, MetadataValue>;
 export type SourceDocument = {
   id: string;
   text: string;
+  format?: "text" | "markdown";
   title?: string;
   metadata?: Metadata;
 };

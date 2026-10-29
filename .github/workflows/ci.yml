@@ -12,6 +12,16 @@ jobs:
   check:
     runs-on: ubuntu-latest
     timeout-minutes: 10
+    services:
+      mongodb:
+        image: mongo:7.0
+        ports:
+          - 27017:27017
+        options: >-
+          --health-cmd "mongosh --quiet --eval 'db.runCommand({ ping: 1 }).ok'"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 10
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
@@ -20,5 +30,9 @@ jobs:
           cache: npm
       - run: npm ci
       - run: npm run check
+      - run: npm run acceptance:server
+        env:
+          MONGODB_URI: mongodb://127.0.0.1:27017
+          MONGODB_ACCEPTANCE_DATABASE: zelvora_brain_public_ci_acceptance
       - run: npm audit --omit=dev --audit-level=high
       - run: npm pack --dry-run

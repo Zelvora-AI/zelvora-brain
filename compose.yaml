@@ -1,0 +1,11 @@
+services:
+  mongodb:
+    image: mongo:7.0
+    restart: unless-stopped
+    ports:
+      - "127.0.0.1:27017:27017"
+    volumes:
+      - zelvora_brain_public_mongodb:/data/db
+
+volumes:
+  zelvora_brain_public_mongodb:
